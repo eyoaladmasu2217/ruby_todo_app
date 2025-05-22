@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for(:title) || "Todo App" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
+    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+
+    <%# Includes all stylesheet files in app/assets/stylesheets %>
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body>
+    <body>
+    <h1>Todo Application</h1>
+    <header>
+      <% current_hour = Time.current.hour %>
+      <% greeting =
+        if current_hour >= 5 && current_hour < 12
+          "Good morning!"
+        elsif current_hour >= 12 && current_hour < 17
+          "Good afternoon!"
+        elsif current_hour >= 17 && current_hour < 21
+          "Good evening!"
+        else
+          "Good night!"
+        end
+      %>
+      <p><%= greeting %></p>
+
+      <p>You've visited <%= session[:visit_count] %> times (total)</p>
+<% page_key = "page_visits_#{request.path}" %>
+<p>Visits to this page (<%= request.path %>): <%= session[page_key] %></p>
+     
+      <% if @last_visited.present? %>
+        <% time_ago = time_ago_in_words(@last_visited) %>
+        <p>Last visited: <%= time_ago %> ago</p>
+      <% else %>
+        <p>This is your first visit!</p>
+      <% end %>
+
+    </header>
+    <%= yield %>
+
+  </body>
+</html>

@@ -1,0 +1,11 @@
+<% content_for :title, "New do app" %>
+
+<h1>New do app</h1>
+
+<%= render "form", do_app: @do_app %>
+
+<br>
+
+<div>
+  <%= link_to "Back to do apps", do_apps_path %>
+</div>
